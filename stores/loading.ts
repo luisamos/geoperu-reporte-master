@@ -1,32 +1,52 @@
-import { defineStore } from "pinia";
+import { computed } from "vue";
+import { useState } from "#app";
 
-type LoadingMode = "Overlay" | "Notif";
+export type LoadingMode = "Overlay" | "Notif";
 
-interface LoadingPayload {
+export interface LoadingPayload {
   tipo?: LoadingMode;
   text?: string;
 }
 
-export const useLoadingStore = defineStore("loading", {
-  state: () => ({
+interface LoadingState {
+  isLoading: boolean;
+  mode: LoadingMode | null;
+  text: string;
+}
+
+export const useLoadingState = () =>
+  useState<LoadingState>("loading", () => ({
     isLoading: false,
-    mode: null as LoadingMode | null,
+    mode: null,
     text: "",
-  }),
-  getters: {
-    isOverlay: (state) => state.isLoading && state.mode === "Overlay",
-    isNotif: (state) => state.isLoading && state.mode === "Notif",
+  }));
+
+export const useLoadingGetters = () => {
+  const state = useLoadingState();
+
+  return {
+    isLoading: computed(() => state.value.isLoading),
+    isOverlay: computed(
+      () => state.value.isLoading && state.value.mode === "Overlay"
+    ),
+    isNotif: computed(
+      () => state.value.isLoading && state.value.mode === "Notif"
+    ),
+    text: computed(() => state.value.text),
+  };
+};
+
+export const loadingActions = {
+  start(payload: LoadingPayload = {}) {
+    const state = useLoadingState();
+    state.value.mode = payload.tipo ?? "Overlay";
+    state.value.text = payload.text ?? "";
+    state.value.isLoading = true;
   },
-  actions: {
-    start(payload: LoadingPayload = {}) {
-      this.mode = payload.tipo ?? "Overlay";
-      this.text = payload.text ?? "";
-      this.isLoading = true;
-    },
-    stop() {
-      this.isLoading = false;
-      this.mode = null;
-      this.text = "";
-    },
+  stop() {
+    const state = useLoadingState();
+    state.value.isLoading = false;
+    state.value.mode = null;
+    state.value.text = "";
   },
-});
+};

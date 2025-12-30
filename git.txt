@@ -1,6 +1,6 @@
 git init
 git add .
-git commit -m "v.1.0 | 30/12/2025 16:02"
+git commit -m "v.1.0 | 30/12/2025 16:33"
 git branch -M main
 git remote add origin https://github.com/luisamos/geoperu-reporte-master.git
 git push -u origin main
