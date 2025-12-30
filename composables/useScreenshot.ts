@@ -48,17 +48,14 @@ export const useScreenshot = () => {
     let html2canvas: any;
 
     try {
-      html2canvas = (await import("html2canvas")).default;
+      html2canvas = (
+        await import(/* @vite-ignore */ "https://cdn.skypack.dev/html2canvas")
+      ).default;
     } catch (error) {
-      try {
-        // @vite-ignore
-        html2canvas = (await import("https://cdn.skypack.dev/html2canvas"))
-          .default;
-      } catch (cdnError) {
-        console.error("html2canvas no disponible", error, cdnError);
-        return null;
-      }
+      console.error("html2canvas no disponible", error);
+      return null;
     }
+
     const elements: SVGElement[] = svgElements?.toArray
       ? svgElements.toArray()
       : Array.from(svgElements || []).filter(

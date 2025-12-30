@@ -11,16 +11,12 @@ export const usePdf = () => {
   ) => {
     let JsPDF: any = null;
     try {
-      const module = await import("jspdf");
+      const module = await import(
+        /* @vite-ignore */ "https://cdn.skypack.dev/jspdf"
+      );
       JsPDF = module.jsPDF || module.default;
     } catch (error) {
-      try {
-        // @vite-ignore
-        const module = await import("https://cdn.skypack.dev/jspdf");
-        JsPDF = module.jsPDF || module.default;
-      } catch (cdnError) {
-        console.error("jsPDF no disponible", error, cdnError);
-      }
+      console.error("jsPDF no disponible", error);
     }
 
     if (!JsPDF) {
