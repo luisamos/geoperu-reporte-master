@@ -17,18 +17,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import AppState from "~/components/AppState.vue";
 import LoadingOverlay from "~/components/LoadingOverlay.vue";
 import LoadingNotif from "~/components/LoadingNotif.vue";
 
-export default {
-  components: {
-    AppState,
-    LoadingOverlay,
-    LoadingNotif,
-  },
-};
+const { $store } = useNuxtApp();
 </script>
 
 <style>

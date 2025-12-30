@@ -1,12 +1,11 @@
 <template>
-    <NuxtLayout>
-        <NuxtPage />
-    </NuxtLayout>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
- 
-<script>
-export default {
-    layout:'reporte.vue',
-    mounted() {}
-}
+
+<script setup>
+definePageMeta({
+  layout: "reporte",
+});
 </script>
