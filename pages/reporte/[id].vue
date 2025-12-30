@@ -601,17 +601,23 @@ const trimestre = computed(() => {
 });
 
 const validateRoute = ({ params }: { params: any }) => {
+  const id = String(params.id || "").trim();
+  if (!id) return false;
+
   const ubigeos = [...(Ubigeo?.Ubigeo || []), ...(UbigeoAlt?.Ubigeo || [])];
-  return ubigeos.some((obj) => {
-    if (
-      String(params.id).indexOf(obj.cod_dist) !== -1 ||
-      String(params.id).indexOf(obj.cod_prov) !== -1 ||
-      String(params.id).indexOf(obj.cod_dpto) !== -1
-    ) {
-      return true;
-    }
-    return false;
-  });
+
+  if (
+    ubigeos.some(
+      (obj) =>
+        id.indexOf(obj.cod_dist) !== -1 ||
+        id.indexOf(obj.cod_prov) !== -1 ||
+        id.indexOf(obj.cod_dpto) !== -1
+    )
+  ) {
+    return true;
+  }
+
+  return /^[0-9a-zA-Z_-]{2,}$/.test(id);
 };
 
 definePageMeta({
